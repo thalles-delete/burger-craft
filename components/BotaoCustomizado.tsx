@@ -16,13 +16,13 @@ export function BotaoCustomizado({ texto, onPress }: CustomButtonProps) {
 const styles = StyleSheet.create({
   botao: {
     width: "100%",
-    backgroundColor: "#c67c4e",
+    backgroundColor: "#E65100",
     borderRadius: 30,
     paddingHorizontal: 30,
     paddingVertical: 16,
     alignItems: "center",
     marginTop: 20,
-    shadowColor: "#c67c4e",
+    shadowColor: "#E65100",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
@@ -31,6 +31,6 @@ const styles = StyleSheet.create({
   botaoTexto: {
     color: "#ffffff",
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: "800",
   },
 });

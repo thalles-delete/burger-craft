@@ -1,5 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
 import {
   Image,
   KeyboardAvoidingView,
@@ -15,16 +13,23 @@ import { BurgerCard } from "./components/BurgerCard";
 import { BotaoCustomizado } from "./components/BotaoCustomizado";
 import { useState } from "react";
 import { Footer } from "./components/Footer";
+import { Outfit_800ExtraBold } from "@expo-google-fonts/outfit";
+import { useFonts } from "expo-font";
+import { Inter_400Regular } from "@expo-google-fonts/inter";
 
 export default function App() {
   const [nome, setNome] = useState("");
   const [mensagem, setMensagem] = useState("");
+  useFonts({
+    Outfit_800ExtraBold,
+    Inter_400Regular,
+  });
 
   const processarPedido = () => {
     if (nome.trim() === "") {
       setMensagem("Por favor, informe seu nome!");
     } else {
-      setMensagem(`Olá ${nome}! Pedido recebido`);
+      setMensagem(`Olá, ${nome}! Pedido recebido`);
     }
   };
 
@@ -42,8 +47,10 @@ export default function App() {
         {/* conteúdo */}
         <View style={styles.conteudo}>
           <View style={styles.boasVindasSecao}>
-            <Text style={styles.boasVindasTitulo}>Bateu a fome?</Text>
-            <Text style={styles.boasVindasSubtitulo}>
+            <Text style={[styles.boasVindasTitulo, styles.outfit]}>
+              Bateu a fome?
+            </Text>
+            <Text style={[styles.boasVindasSubtitulo, styles.inter]}>
               Escolha seu burger artesanal de hoje
             </Text>
           </View>
@@ -54,13 +61,20 @@ export default function App() {
               source={require("./assets/burger.png")}
             ></Image>
             <Text style={styles.exibicaoDESTAQUE}>DESTAQUE DA CASA</Text>
-            <Text style={styles.exibicaoTitulo}>Smash Duplo Cheddar</Text>
-            <Text style={styles.exibicaoDescricao}>
+            <Text style={[styles.exibicaoTitulo, styles.outfit]}>
+              Smash Duplo Cheddar
+            </Text>
+            <Text style={[styles.exibicaoDescricao, styles.inter]}>
               Dois blends de 100g, queijo cheddar derretido e molho especial
             </Text>
-            <Text style={styles.exibicaoPreco}>R$ 34,90</Text>
-            <BotaoCustomizado texto="+" onPress={processarPedido} />
-            <Ionicons nome="add-circle" size={30} color={"#E65100"} />
+            <View style={styles.exibicaoPrecoEBotao}>
+              <Text style={[styles.exibicaoPreco, styles.outfit]}>
+                R$ 34,90
+              </Text>
+              <TouchableOpacity style={styles.exibicaoBotaoAdicionar}>
+                <Image source={require("./assets/adicionar.png")} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <Text style={styles.menuTitulo}>Nossos burgers</Text>
@@ -95,7 +109,12 @@ export default function App() {
           </View>
 
           <View style={styles.pedidoSecao}>
-            <Text style={styles.nomePergunta}>Qual é o seu nome?</Text>
+            <Text style={[styles.nomePergunta, styles.outfit]}>
+              Como podemos te chamar?
+            </Text>
+            <Text style={[styles.nomeDescricao, styles.inter]}>
+              Insira seus dados para agilizar sua retirada ou entrega
+            </Text>
             <TextInput
               placeholder="Digite seu nome"
               style={styles.nomeInput}
@@ -103,12 +122,16 @@ export default function App() {
               onChangeText={setNome}
             ></TextInput>
 
-            <TouchableOpacity>
-              <Ionicons name="add-circle" />
-            </TouchableOpacity>
+            <BotaoCustomizado
+              texto="Fazer meu pedido"
+              onPress={processarPedido}
+            />
 
             {mensagem !== "" && (
-              <Text style={styles.mensagemTexto}>{mensagem}</Text>
+              <View style={styles.mensagemSecao}>
+                <Image source={require("./assets/check.png")} />
+                <Text style={styles.mensagemTexto}>{mensagem}</Text>
+              </View>
             )}
           </View>
         </View>
@@ -160,9 +183,16 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
   },
   exibicaoDESTAQUE: {
-    paddingLeft: 20,
-    paddingBottom: 8,
+    marginHorizontal: 20,
+    marginBottom: 8,
     color: "#E65100",
+    backgroundColor: "#FFF3E0",
+    maxWidth: "42%",
+    paddingHorizontal: 7,
+    textAlign: "center",
+    paddingVertical: 4,
+    borderRadius: 24,
+    fontWeight: "800",
   },
   exibicaoTitulo: {
     fontSize: 20,
@@ -176,12 +206,22 @@ const styles = StyleSheet.create({
     marginTop: 4,
     paddingHorizontal: 20,
   },
+  exibicaoPrecoEBotao: {
+    flexDirection: "row",
+    marginBottom: 12,
+    alignContent: "center",
+    justifyContent: "space-between",
+  },
   exibicaoPreco: {
     fontSize: 20,
     fontWeight: "800",
     color: "#E65100",
     marginTop: 12,
     paddingHorizontal: 20,
+  },
+  exibicaoBotaoAdicionar: {
+    paddingHorizontal: 20,
+    marginTop: 8,
   },
   menuTitulo: {
     fontSize: 22,
@@ -193,7 +233,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginBottom: 32,
   },
   pedidoSecao: {
     backgroundColor: "#ffffff",
@@ -203,12 +242,15 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.05,
     elevation: 4,
-    marginTop: 10,
+    marginTop: 16,
   },
   nomePergunta: {
     fontSize: 18,
     fontWeight: "800",
     color: "#2f2d2c",
+    marginBottom: 4,
+  },
+  nomeDescricao: {
     marginBottom: 16,
   },
   nomeInput: {
@@ -221,9 +263,34 @@ const styles = StyleSheet.create({
   },
   mensagemTexto: {
     fontSize: 16,
-    fontWeight: "800",
-    color: "#c67c4e",
+    fontWeight: "600",
+    color: "#2E7D32",
+  },
+  mensagemSecao: {
+    flexDirection: "row",
+    backgroundColor: "#E8F5E9",
+    borderRadius: 16,
+    alignItems: "center",
+    marginTop: 16,
+    paddingVertical: 14,
+    justifyContent: "flex-start",
+    paddingHorizontal: 16,
+    gap: 8,
+  },
+  mensagemCheck: {
+    color: "white",
+    borderRadius: 20,
+    backgroundColor: "#2E7D32",
+    width: "8%",
     textAlign: "center",
-    marginTop: 20,
+    marginHorizontal: 20,
+  },
+  outfit: {
+    fontFamily: "Outfit_800ExtraBold",
+    fontWeight: "100",
+  },
+  inter: {
+    fontFamily: "Inter_400Regular",
+    color: "#6C757D",
   },
 });

@@ -18,6 +18,6 @@ const styles = StyleSheet.create({
   footerTexto: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#9b9b9b",
+    color: "#6C757D",
   },
 });
